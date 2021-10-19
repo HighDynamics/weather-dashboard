@@ -59,7 +59,7 @@ var getForecast = (city) => {
   fetch(
     "https://api.openweathermap.org/data/2.5/weather?q=" +
       apiCity +
-      "&units=imperial&appid=e1aef3875b4b885d2c8c55ff7afead43"
+      "&units=imperial&appid=4afb253040e7beb67564a44b1a358f8d"
   )
     .then((response) => {
       if (response.ok) {
