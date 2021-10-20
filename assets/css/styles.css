@@ -6,50 +6,55 @@
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 h1 {
-    text-align: center;
-    color: white;
-    background-color: blue;
-    margin: 0 auto;
+  text-align: center;
+  color: white;
+  background-color: blue;
+  margin: 0 auto;
 }
 
 #search-input-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    margin: 0 auto;
-    height: 4rem;
-    border-bottom: 2px solid grey;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  height: 4rem;
+  border-bottom: 2px solid grey;
 }
 
-#search-input-container h2{
-    font-size: 1rem;
+#search-input-container h2 {
+  font-size: 1rem;
 }
 
 .btn {
-    border: none;
-    height: 2rem;
+  border: none;
+  height: 2rem;
 }
 
-#search-history-container{
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    margin-top: 1rem;
+#search-history-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 1rem;
 }
 
-#detailed-forecast-container{
-    border: 1px solid black;
-    margin: 1rem .5rem;
-    padding: .5rem;
+#detailed-forecast-container {
+  border: 1px solid black;
+  margin: 1rem 0.5rem;
+  padding: 0.5rem;
 }
 
-#city-date-icon-container{
-    font-size: 1.5rem;
+#detailed-forecast-container img {
+  display: inline;
+  height: inherit;
+}
+
+#city-date-icon-container {
+  font-size: 1.5rem;
 }
 /*
 @media only screen and (min-width: 1024px){
