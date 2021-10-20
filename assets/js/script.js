@@ -137,4 +137,12 @@ var getForecast = (location) => {
   }
 };
 
-getLocation("london, ky");
+var handleSearch = () => {
+  var value = cityInputEl.value
+  getLocation(value)
+  
+  // clear input
+  cityInputEl.value = ""
+}
+
+searchBtn.addEventListener("click", handleSearch)
