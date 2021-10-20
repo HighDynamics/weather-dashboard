@@ -21,8 +21,9 @@ var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 cityDateIconContainerEl.innerText = currentDate;
 
 // render 5-day forecast
-var renderFiveDayForecast = () => {
+var renderFiveDayForecast = (dailyArray) => {
   for (var i = 0; i < 5; i++) {
+    var selectedDate = dailyArray[i];
     var fiveDayItemEl = document.createElement("div");
     fiveDayItemEl.setAttribute("class", "fiveDayItem");
 
@@ -33,25 +34,34 @@ var renderFiveDayForecast = () => {
       .toLocaleString();
     fiveDayItemEl.appendChild(fiveDayDateEl);
 
-    // icon TODO: use api
+    // icon
+    var iconCode = selectedDate.weather[0].icon;
+    var fiveDayIconEl = document.createElement("img");
+    fiveDayIconEl.setAttribute(
+      "src",
+      "http://openweathermap.org/img/wn/" + iconCode + ".png"
+    );
+    fiveDayItemEl.appendChild(fiveDayIconEl);
 
-    // temp TODO: use api
+    // temp
     var fiveDayTempEl = document.createElement("p");
+    fiveDayTempEl.innerText = "Temp: " + selectedDate.temp.day + " \u00BAF";
     fiveDayItemEl.appendChild(fiveDayTempEl);
 
-    // wind TODO: use api
+    // wind
     var fiveDayWindEl = document.createElement("p");
+    fiveDayWindEl.innerText = "Wind: " + selectedDate.wind_speed + " MPH";
     fiveDayItemEl.appendChild(fiveDayWindEl);
 
-    // humidity TODO: use api
+    // humidity
     var fiveDayHumidityEl = document.createElement("p");
+    fiveDayHumidityEl.innerText = "Humidity: " + selectedDate.humidity + "%";
     fiveDayItemEl.appendChild(fiveDayHumidityEl);
 
     // render to container
     fiveDayForecastContainerEl.appendChild(fiveDayItemEl);
   }
 };
-renderFiveDayForecast();
 
 // the api call to open weather geo
 var getLocation = (input) => {
@@ -102,24 +112,23 @@ var getForecast = (location) => {
         }
       })
       .then((data) => {
-        console.log(data);
-        // create img for icon
+        // render data to detailed forecast
+        cityDateIconContainerEl.innerText = location.string + " " + currentDate;
+        tempEl.innerText += " " + data.current.temp + " \u00BAF";
+        windEl.innerText += " " + data.current.wind_speed + " MPH";
+        humidityEl.innerText += " " + data.current.humidity + "%";
+        uvIndexEl.innerText += " " + data.current.uvi;
+
+        // create and append img for icon
         var iconCode = data.current.weather[0].icon;
         var iconEl = document.createElement("img");
         iconEl.setAttribute(
           "src",
           "http://openweathermap.org/img/wn/" + iconCode + ".png"
         );
-
-        // render data to detailed forecast
-        cityDateIconContainerEl.innerText = location.string + " " + currentDate;
-        // add icon
         cityDateIconContainerEl.appendChild(iconEl);
 
-        tempEl.innerText += " " + Math.round(data.current.temp);
-        windEl.innerText += " " + data.current.wind_speed + " MPH";
-        humidityEl.innerText += " " + data.current.humidity + " %";
-        uvIndexEl.innerText += " " + data.current.uvi;
+        renderFiveDayForecast(data.daily);
       })
       .catch((error) => {
         //TODO:alert("There was a problem with the request.");
