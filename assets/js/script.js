@@ -22,6 +22,10 @@ cityDateIconContainerEl.innerText = currentDate;
 
 // render 5-day forecast
 var renderFiveDayForecast = (dailyArray) => {
+  // clear previous 5-day forecast
+  fiveDayForecastContainerEl.innerHTML = "";
+
+  // create new elements
   for (var i = 0; i < 5; i++) {
     var selectedDate = dailyArray[i];
     var fiveDayItemEl = document.createElement("div");
@@ -87,17 +91,33 @@ var getLocation = (input) => {
         alert("City not found, try again");
         return;
       }
-      return {
+
+      var dataObject = {
         lat: data[0].lat,
         lon: data[0].lon,
         string: data[0].name + ", " + data[0].state,
+        storageKey: data[0].name + data[0].state,
       };
+
+      // persist to local storage if not previously saved
+      if (!localStorage[dataObject.storageKey]) {
+        saveSearch(dataObject);
+      }
+
+      return dataObject;
     })
     .then((location) => getForecast(location));
 };
 
 // the api call to open weather onecall
 var getForecast = (location) => {
+  // reset previous values
+  cityDateIconContainerEl.innerText = "";
+  tempEl.innerText = "Temp:";
+  windEl.innerText = "Wind:";
+  humidityEl.innerText = "Humidity:";
+  uvIndexEl.innerText = "UV index:";
+
   if (location) {
     fetch(
       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -137,12 +157,56 @@ var getForecast = (location) => {
   }
 };
 
+// when 'search' button is clicked
 var handleSearch = () => {
-  var value = cityInputEl.value
-  getLocation(value)
-  
-  // clear input
-  cityInputEl.value = ""
-}
+  // sentinel
+  if (!cityInputEl.value) {
+    alert("Please enter a city to search.");
+    return;
+  }
 
-searchBtn.addEventListener("click", handleSearch)
+  var value = cityInputEl.value;
+
+  getLocation(value);
+
+  // clear input
+  cityInputEl.value = "";
+};
+
+// create buttons from localStorage
+var createSavedSearchButton = (dataObject) => {
+  var savedSearchButton = document.createElement("button");
+  savedSearchButton.setAttribute("class", "btn");
+  savedSearchButton.setAttribute("data-city", dataObject.storageKey);
+  savedSearchButton.innerText = dataObject.string;
+
+  searchHistoryContainerEl.appendChild(savedSearchButton);
+};
+
+var saveSearch = (dataObject) => {
+  createSavedSearchButton(dataObject);
+
+  localStorage[dataObject.storageKey] = JSON.stringify(dataObject);
+};
+
+var handleSavedSearchClick = (event) => {
+  var city = event.target.getAttribute("data-city");
+  getForecast(JSON.parse(localStorage[city]));
+};
+
+// check local storage for data; render if available
+var renderSavedSearches = () => {
+  // sentinel
+  if (localStorage.length === 0) {
+    return;
+  }
+
+  for (var i = 0; i < localStorage.length; i++) {
+    var data = JSON.parse(localStorage.getItem(localStorage.key(i)));
+    createSavedSearchButton(data);
+  }
+};
+renderSavedSearches();
+
+searchBtn.addEventListener("click", handleSearch);
+searchHistoryContainerEl.addEventListener("click", handleSavedSearchClick);
