@@ -88,6 +88,7 @@ var getForecast = (location) => {
       .then((data) => {
         var cityNameEl = document.createElement("h3");
         var dateEl = document.createElement("span");
+        var rulerEl = document.createElement("hr")
         dateEl.setAttribute("class", "date");
 
         cityNameEl.innerText = location.string;
@@ -95,7 +96,7 @@ var getForecast = (location) => {
 
         // empty container and append elements
         cityDateContainerEl.innerText = "";
-        cityDateContainerEl.append(cityNameEl, dateEl);
+        cityDateContainerEl.append(cityNameEl, dateEl, rulerEl);
 
         // render data to detailed forecast
         tempEl.innerText += " " + data.current.temp + " \u00BAF";
