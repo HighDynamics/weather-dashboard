@@ -14,7 +14,9 @@ var cityDateIconContainerEl = document.getElementById(
 var tempEl = document.getElementById("temp");
 var windEl = document.getElementById("wind");
 var humidityEl = document.getElementById("humidity");
-var uvIndexEl = document.getElementById("uv-index");
+var uvIndexContainerEl = document.getElementById("uv-index-container");
+console.log(uvIndexContainerEl);
+var uvIndexKeyEl = document.getElementById("uv-index-key");
 var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 
 // render date
@@ -29,7 +31,7 @@ var renderFiveDayForecast = (dailyArray) => {
   for (var i = 0; i < 5; i++) {
     var selectedDate = dailyArray[i];
     var fiveDayItemEl = document.createElement("div");
-    fiveDayItemEl.setAttribute("class", "fiveDayItem");
+    fiveDayItemEl.setAttribute("class", "five-day-item");
 
     // date
     var fiveDayDateEl = document.createElement("h4");
@@ -48,19 +50,40 @@ var renderFiveDayForecast = (dailyArray) => {
     fiveDayItemEl.appendChild(fiveDayIconEl);
 
     // temp
-    var fiveDayTempEl = document.createElement("p");
-    fiveDayTempEl.innerText = "Temp: " + selectedDate.temp.day + " \u00BAF";
-    fiveDayItemEl.appendChild(fiveDayTempEl);
+    var fiveDayTempContainerEl = document.createElement("div");
+    var fiveDayTempKeyEl = document.createElement("p");
+    var fiveDayTempValueEl = document.createElement("span");
+
+    fiveDayTempKeyEl.innerText = "Temp";
+    fiveDayTempValueEl.innerText = selectedDate.temp.day + " \u00BAF";
+
+    fiveDayTempContainerEl.append(fiveDayTempKeyEl, fiveDayTempValueEl);
+    fiveDayItemEl.appendChild(fiveDayTempContainerEl);
 
     // wind
-    var fiveDayWindEl = document.createElement("p");
-    fiveDayWindEl.innerText = "Wind: " + selectedDate.wind_speed + " MPH";
-    fiveDayItemEl.appendChild(fiveDayWindEl);
+    var fiveDayWindContainerEl = document.createElement("div");
+    var fiveDayWindKeyEl = document.createElement("p");
+    var fiveDayWindValueEl = document.createElement("span");
+
+    fiveDayWindKeyEl.innerText = "Wind";
+    fiveDayWindValueEl.innerText = selectedDate.wind_speed + " MPH";
+
+    fiveDayWindContainerEl.append(fiveDayWindKeyEl, fiveDayWindValueEl);
+    fiveDayItemEl.appendChild(fiveDayWindContainerEl);
 
     // humidity
-    var fiveDayHumidityEl = document.createElement("p");
-    fiveDayHumidityEl.innerText = "Humidity: " + selectedDate.humidity + "%";
-    fiveDayItemEl.appendChild(fiveDayHumidityEl);
+    var fiveDayHumidityContainerEl = document.createElement("div");
+    var fiveDayHumidityKeyEl = document.createElement("p");
+    var fiveDayHumidityValueEl = document.createElement("span");
+
+    fiveDayHumidityKeyEl.innerText = "Humidity";
+    fiveDayHumidityValueEl.innerText = selectedDate.humidity + "%";
+
+    fiveDayHumidityContainerEl.append(
+      fiveDayHumidityKeyEl,
+      fiveDayHumidityValueEl
+    );
+    fiveDayItemEl.appendChild(fiveDayHumidityContainerEl);
 
     // render to container
     fiveDayForecastContainerEl.appendChild(fiveDayItemEl);
@@ -116,7 +139,7 @@ var getForecast = (location) => {
   tempEl.innerText = "Temp:";
   windEl.innerText = "Wind:";
   humidityEl.innerText = "Humidity:";
-  uvIndexEl.innerText = "UV index:";
+  uvIndexKeyEl.innerText = "UV index:";
 
   if (location) {
     fetch(
@@ -132,21 +155,79 @@ var getForecast = (location) => {
         }
       })
       .then((data) => {
-        // render data to detailed forecast
-        cityDateIconContainerEl.innerText = location.string + " " + currentDate;
-        tempEl.innerText += " " + data.current.temp + " \u00BAF";
-        windEl.innerText += " " + data.current.wind_speed + " MPH";
-        humidityEl.innerText += " " + data.current.humidity + "%";
-        uvIndexEl.innerText += " " + data.current.uvi;
+        var cityNameEl = document.createElement("h3");
+        var dateEl = document.createElement("span");
+        dateEl.setAttribute("class", "date");
 
-        // create and append img for icon
+        cityNameEl.innerText = location.string;
+        dateEl.innerText = currentDate;
+
+        // create img for icon
         var iconCode = data.current.weather[0].icon;
         var iconEl = document.createElement("img");
         iconEl.setAttribute(
           "src",
           "http://openweathermap.org/img/wn/" + iconCode + ".png"
         );
-        cityDateIconContainerEl.appendChild(iconEl);
+
+        // empty container and append elements
+        cityDateIconContainerEl.innerText = "";
+        cityDateIconContainerEl.append(cityNameEl, iconEl, dateEl);
+
+        // render data to detailed forecast
+        tempEl.innerText += " " + data.current.temp + " \u00BAF";
+        windEl.innerText += " " + data.current.wind_speed + " MPH";
+        humidityEl.innerText += " " + data.current.humidity + "%";
+
+        var uvIndex = data.current.uvi;
+        var uvIndexValueEl = document.createElement("span");
+        uvIndexValueEl.innerText = uvIndex;
+
+        // apply color to uv index
+        switch (true) {
+          case uvIndex < 3:
+            uvIndexValueEl.setAttribute(
+              "style",
+              "background-color: rgb(111 192	131)"
+            );
+            break;
+          case uvIndex > 2 && uvIndex < 6:
+            uvIndexValueEl.setAttribute(
+              "style",
+              "background-color: rgb(255 215	49)"
+            );
+            break;
+          case uvIndex > 5 && uvIndex < 8:
+            uvIndexValueEl.setAttribute(
+              "style",
+              "background-color: rgb(240 121	43)"
+            );
+            break;
+          case uvIndex > 7 && uvIndex < 11:
+            uvIndexValueEl.setAttribute(
+              "style",
+              "background-color: rgb(247 28 40)"
+            );
+            break;
+          case uvIndex > 10:
+            uvIndexValueEl.setAttribute(
+              "style",
+              "background-color: rgb(221 47 120)"
+            );
+            break;
+          default:
+            break;
+        }
+
+        // replace index value with new or append new
+        var oldUvIndexValueEl = document.querySelector(
+          "#uv-index-container span"
+        );
+        if (oldUvIndexValueEl) {
+          oldUvIndexValueEl.replaceWith(uvIndexValueEl);
+        } else {
+          uvIndexContainerEl.appendChild(uvIndexValueEl);
+        }
 
         renderFiveDayForecast(data.daily);
       })

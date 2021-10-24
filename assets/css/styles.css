@@ -16,6 +16,10 @@ h1 {
   margin: 0 auto;
 }
 
+h3 {
+  margin: 0;
+}
+
 #search-input-container {
   display: flex;
   justify-content: space-around;
@@ -28,6 +32,13 @@ h1 {
 
 #search-input-container h2 {
   font-size: 1rem;
+  margin: 0;
+}
+
+#example {
+  font-size: .8rem;
+  color: gray;
+  font-style: italic;
 }
 
 .btn {
@@ -38,29 +49,63 @@ h1 {
 #search-history-container {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   width: 100%;
-  margin-top: 1rem;
 }
+
+#search-history-container button {
+white-space: nowrap;
+margin-top: .5rem;
+;}
 
 #detailed-forecast-container {
   border: 1px solid black;
-  margin: 1rem 0.5rem;
+  margin: .5rem 0.5rem;
   padding: 0.5rem;
-}
-
-#detailed-forecast-container img {
-  display: inline;
-  height: inherit;
 }
 
 #city-date-icon-container {
   font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#uv-index-key{
+  display: inline;
+}
+
+#uv-index-container span {
+  padding: 0 1rem;
+
+}
+
+.five-day-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.five-day-item div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.five-day-item p {
+  margin: 0;
 }
 /*
 @media only screen and (min-width: 1024px){
-main {
+  main {
     display: grid;
     grid-template-columns: 1fr 2fr;
-}
+  }
+
+  #five-day-container {
+    display: flex;
+    flex-direction: column;
+  }
 }
 */

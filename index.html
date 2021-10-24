@@ -14,9 +14,9 @@
     <main>
       <section id="all-search-container">
         <div id="search-input-container">
-            <div>
-          <h2>Search by city/state:</h2>
-          <span id="example">ex: Chicago, IL</span>
+          <div>
+            <h2>Search by city/state:</h2>
+            <span id="example">ex: Chicago, IL</span>
           </div>
           <input id="city-input" type="text" />
           <button id="search-button" class="btn">Search</button>
@@ -31,11 +31,11 @@
           <p id="temp">Temp:</p>
           <p id="wind">Wind:</p>
           <p id="humidity">Humidity:</p>
-          <p id="uv-index">UV index:</p>
+          <div id="uv-index-container">
+            <p id="uv-index-key">UV index:</p>
+          </div>
         </div>
-        <div id="five-day-container">
-          <h3>5-Day Forecast:</h3>
-        </div>
+        <div id="five-day-container"></div>
       </section>
     </main>
     <!-- Luxon CDN -->
