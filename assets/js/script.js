@@ -8,9 +8,8 @@ var searchBtn = document.getElementById("search-button");
 var searchHistoryContainerEl = document.getElementById(
   "search-history-container"
 );
-var cityDateIconContainerEl = document.getElementById(
-  "city-date-icon-container"
-);
+var cityDateContainerEl = document.getElementById("city-date-container");
+var iconContainerEl = document.getElementById("icon-container");
 var tempEl = document.getElementById("temp");
 var windEl = document.getElementById("wind");
 var humidityEl = document.getElementById("humidity");
@@ -20,7 +19,7 @@ var uvIndexKeyEl = document.getElementById("uv-index-key");
 var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 
 // render date
-cityDateIconContainerEl.innerText = currentDate;
+cityDateContainerEl.innerText = currentDate;
 
 // the api call to open weather geo
 var getLocation = (input) => {
@@ -67,7 +66,7 @@ var getLocation = (input) => {
 // the api call to open weather onecall
 var getForecast = (location) => {
   // reset previous values
-  cityDateIconContainerEl.innerText = "";
+  cityDateContainerEl.innerText = "";
   tempEl.innerText = "Temp:";
   windEl.innerText = "Wind:";
   humidityEl.innerText = "Humidity:";
@@ -94,17 +93,9 @@ var getForecast = (location) => {
         cityNameEl.innerText = location.string;
         dateEl.innerText = currentDate;
 
-        // create img for icon
-        var iconCode = data.current.weather[0].icon;
-        var iconEl = document.createElement("img");
-        iconEl.setAttribute(
-          "src",
-          "http://openweathermap.org/img/wn/" + iconCode + ".png"
-        );
-
         // empty container and append elements
-        cityDateIconContainerEl.innerText = "";
-        cityDateIconContainerEl.append(cityNameEl, iconEl, dateEl);
+        cityDateContainerEl.innerText = "";
+        cityDateContainerEl.append(cityNameEl, dateEl);
 
         // render data to detailed forecast
         tempEl.innerText += " " + data.current.temp + " \u00BAF";
@@ -160,6 +151,16 @@ var getForecast = (location) => {
         } else {
           uvIndexContainerEl.appendChild(uvIndexValueEl);
         }
+
+        // remove old icon, render new icon
+        iconContainerEl.innerHTML = ""
+        var iconCode = data.current.weather[0].icon;
+        var iconEl = document.createElement("img");
+        iconEl.setAttribute(
+          "src",
+          "http://openweathermap.org/img/wn/" + iconCode + ".png"
+        );
+        iconContainerEl.appendChild(iconEl);
 
         renderFiveDayForecast(data.daily);
       })
@@ -275,7 +276,7 @@ var saveSearch = (dataObject) => {
   createSavedSearchButton(dataObject);
 
   localStorage[dataObject.storageKey] = JSON.stringify(dataObject);
-};  
+};
 
 // check localStorage for data; render if available
 var renderSavedSearches = () => {

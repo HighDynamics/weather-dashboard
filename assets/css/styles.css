@@ -85,13 +85,28 @@ h3 {
   border: 4px double whitesmoke;
   margin: 0.5rem 0.5rem;
   padding: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
-#city-date-icon-container {
+#city-date-container {
   font-size: 1.5rem;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
+  width: 100%;
+}
+
+#icon-container{
+align-self: center;
+flex-grow: 2;
+}
+
+#icon-container img {
+  display: block;
+  height: 120px;
+  margin: 0 auto;
 }
 
 #uv-index-key {
@@ -109,6 +124,7 @@ h3 {
   bottom: 0;
   width: 100%;
 }
+
 .five-day-item {
   display: flex;
   justify-content: space-around;
