@@ -22,74 +22,6 @@ var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 // render date
 cityDateIconContainerEl.innerText = currentDate;
 
-// render 5-day forecast
-var renderFiveDayForecast = (dailyArray) => {
-  // clear previous 5-day forecast
-  fiveDayForecastContainerEl.innerHTML = "";
-
-  // create new elements
-  for (var i = 0; i < 5; i++) {
-    var selectedDate = dailyArray[i];
-    var fiveDayItemEl = document.createElement("div");
-    fiveDayItemEl.setAttribute("class", "five-day-item");
-
-    // date
-    var fiveDayDateEl = document.createElement("h4");
-    fiveDayDateEl.innerText = DateTime.now()
-      .plus({ days: i + 1 })
-      .toLocaleString();
-    fiveDayItemEl.appendChild(fiveDayDateEl);
-
-    // icon
-    var iconCode = selectedDate.weather[0].icon;
-    var fiveDayIconEl = document.createElement("img");
-    fiveDayIconEl.setAttribute(
-      "src",
-      "http://openweathermap.org/img/wn/" + iconCode + ".png"
-    );
-    fiveDayItemEl.appendChild(fiveDayIconEl);
-
-    // temp
-    var fiveDayTempContainerEl = document.createElement("div");
-    var fiveDayTempKeyEl = document.createElement("p");
-    var fiveDayTempValueEl = document.createElement("span");
-
-    fiveDayTempKeyEl.innerText = "Temp";
-    fiveDayTempValueEl.innerText = selectedDate.temp.day + " \u00BAF";
-
-    fiveDayTempContainerEl.append(fiveDayTempKeyEl, fiveDayTempValueEl);
-    fiveDayItemEl.appendChild(fiveDayTempContainerEl);
-
-    // wind
-    var fiveDayWindContainerEl = document.createElement("div");
-    var fiveDayWindKeyEl = document.createElement("p");
-    var fiveDayWindValueEl = document.createElement("span");
-
-    fiveDayWindKeyEl.innerText = "Wind";
-    fiveDayWindValueEl.innerText = selectedDate.wind_speed + " MPH";
-
-    fiveDayWindContainerEl.append(fiveDayWindKeyEl, fiveDayWindValueEl);
-    fiveDayItemEl.appendChild(fiveDayWindContainerEl);
-
-    // humidity
-    var fiveDayHumidityContainerEl = document.createElement("div");
-    var fiveDayHumidityKeyEl = document.createElement("p");
-    var fiveDayHumidityValueEl = document.createElement("span");
-
-    fiveDayHumidityKeyEl.innerText = "Humidity";
-    fiveDayHumidityValueEl.innerText = selectedDate.humidity + "%";
-
-    fiveDayHumidityContainerEl.append(
-      fiveDayHumidityKeyEl,
-      fiveDayHumidityValueEl
-    );
-    fiveDayItemEl.appendChild(fiveDayHumidityContainerEl);
-
-    // render to container
-    fiveDayForecastContainerEl.appendChild(fiveDayItemEl);
-  }
-};
-
 // the api call to open weather geo
 var getLocation = (input) => {
   var inputArray = input.split(",");
@@ -238,6 +170,84 @@ var getForecast = (location) => {
   }
 };
 
+// render 5-day forecast
+var renderFiveDayForecast = (dailyArray) => {
+  // clear previous 5-day forecast
+  fiveDayForecastContainerEl.innerHTML = "";
+
+  // create new elements
+  for (var i = 0; i < 5; i++) {
+    var selectedDate = dailyArray[i];
+    var fiveDayItemEl = document.createElement("div");
+    fiveDayItemEl.setAttribute("class", "five-day-item");
+
+    // date
+    var fiveDayDateEl = document.createElement("h4");
+    fiveDayDateEl.innerText = DateTime.now()
+      .plus({ days: i + 1 })
+      .toLocaleString();
+    fiveDayItemEl.appendChild(fiveDayDateEl);
+
+    // icon
+    var iconCode = selectedDate.weather[0].icon;
+    var fiveDayIconEl = document.createElement("img");
+    fiveDayIconEl.setAttribute(
+      "src",
+      "http://openweathermap.org/img/wn/" + iconCode + ".png"
+    );
+    fiveDayItemEl.appendChild(fiveDayIconEl);
+
+    // temp
+    var fiveDayTempContainerEl = document.createElement("div");
+    var fiveDayTempKeyEl = document.createElement("p");
+    var fiveDayTempValueEl = document.createElement("span");
+
+    fiveDayTempKeyEl.innerText = "Temp";
+    fiveDayTempValueEl.innerText = selectedDate.temp.day + " \u00BAF";
+
+    fiveDayTempContainerEl.append(fiveDayTempKeyEl, fiveDayTempValueEl);
+    fiveDayItemEl.appendChild(fiveDayTempContainerEl);
+
+    // wind
+    var fiveDayWindContainerEl = document.createElement("div");
+    var fiveDayWindKeyEl = document.createElement("p");
+    var fiveDayWindValueEl = document.createElement("span");
+
+    fiveDayWindKeyEl.innerText = "Wind";
+    fiveDayWindValueEl.innerText = selectedDate.wind_speed + " MPH";
+
+    fiveDayWindContainerEl.append(fiveDayWindKeyEl, fiveDayWindValueEl);
+    fiveDayItemEl.appendChild(fiveDayWindContainerEl);
+
+    // humidity
+    var fiveDayHumidityContainerEl = document.createElement("div");
+    var fiveDayHumidityKeyEl = document.createElement("p");
+    var fiveDayHumidityValueEl = document.createElement("span");
+
+    fiveDayHumidityKeyEl.innerText = "Humidity";
+    fiveDayHumidityValueEl.innerText = selectedDate.humidity + "%";
+
+    fiveDayHumidityContainerEl.append(
+      fiveDayHumidityKeyEl,
+      fiveDayHumidityValueEl
+    );
+    fiveDayItemEl.appendChild(fiveDayHumidityContainerEl);
+
+    // render to container
+    fiveDayForecastContainerEl.appendChild(fiveDayItemEl);
+  }
+};
+
+// create buttons from localStorage
+var createSavedSearchButton = (dataObject) => {
+  var savedSearchButton = document.createElement("button");
+  savedSearchButton.setAttribute("class", "btn");
+  savedSearchButton.setAttribute("data-city", dataObject.storageKey);
+  savedSearchButton.innerText = dataObject.string;
+
+  searchHistoryContainerEl.appendChild(savedSearchButton);
+};
+
 // when 'search' button is clicked
 var handleSearch = () => {
   // sentinel
@@ -254,28 +264,20 @@ var handleSearch = () => {
   cityInputEl.value = "";
 };
 
-// create buttons from localStorage
-var createSavedSearchButton = (dataObject) => {
-  var savedSearchButton = document.createElement("button");
-  savedSearchButton.setAttribute("class", "btn");
-  savedSearchButton.setAttribute("data-city", dataObject.storageKey);
-  savedSearchButton.innerText = dataObject.string;
-
-  searchHistoryContainerEl.appendChild(savedSearchButton);
-};
-
-var saveSearch = (dataObject) => {
-  createSavedSearchButton(dataObject);
-
-  localStorage[dataObject.storageKey] = JSON.stringify(dataObject);
-};
-
+// when a saved city is clicked
 var handleSavedSearchClick = (event) => {
   var city = event.target.getAttribute("data-city");
   getForecast(JSON.parse(localStorage[city]));
 };
 
-// check local storage for data; render if available
+// save data to localStorage
+var saveSearch = (dataObject) => {
+  createSavedSearchButton(dataObject);
+
+  localStorage[dataObject.storageKey] = JSON.stringify(dataObject);
+};  
+
+// check localStorage for data; render if available
 var renderSavedSearches = () => {
   // sentinel
   if (localStorage.length === 0) {
