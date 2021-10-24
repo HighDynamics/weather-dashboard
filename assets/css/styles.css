@@ -50,15 +50,10 @@ h3 {
   margin: 0;
 }
 
-#example {
-  font-size: 0.8rem;
-  color: gray;
-  font-style: italic;
-}
-
 #city-input {
   background-color: var(--transparent-blue);
   border: 3px solid whitesmoke;
+  padding: .2rem .5rem;
 }
 
 .btn {
