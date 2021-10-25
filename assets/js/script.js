@@ -267,6 +267,11 @@ var handleSearch = () => {
 
 // when a saved city is clicked
 var handleSavedSearchClick = (event) => {
+  // sentinel
+  if(event.target.nodeName !== "BUTTON"){
+    return
+  }
+
   var city = event.target.getAttribute("data-city");
   getForecast(JSON.parse(localStorage[city]));
 };
