@@ -6,6 +6,8 @@
     rgb(29, 56, 66) 66%
   );
   --transparent-blue: rgba(28, 15, 87, 0.3);
+
+  --light-blue: rgba(48, 96, 110, 0.89);
 }
 
 * {
@@ -14,7 +16,7 @@
 }
 
 html {
-  height: 100%;
+  height: 100vh;
 }
 
 body {
@@ -53,7 +55,12 @@ h3 {
 #city-input {
   background-color: var(--transparent-blue);
   border: 3px solid whitesmoke;
-  padding: .2rem .5rem;
+  padding: 0.2rem 0.5rem;
+}
+
+#city-input:focus{
+  background-color: var(--light-blue);
+  outline: none;
 }
 
 .btn {
@@ -62,18 +69,23 @@ h3 {
   color: white;
   background-color: var(--transparent-blue);
   border: 1px solid whitesmoke;
+  transition: background-color .3s ease-in-out;
+}
+
+.btn:hover{
+ background-color: var(--light-blue);
 }
 
 #search-history-container {
   display: flex;
   width: 100%;
-  padding-bottom: .5rem;
-  overflow-x:scroll;
+  padding-bottom: 0.5rem;
+  overflow-x: scroll;
 }
 
 #search-history-container button {
   white-space: nowrap;
-  margin: 0.5rem .3rem;
+  margin: 0.5rem 0.3rem;
   border-radius: 25%;
 }
 
@@ -98,9 +110,9 @@ h3 {
 #city-date-container hr {
   width: 100%;
 }
-#icon-container{
-align-self: center;
-flex-grow: 2;
+#icon-container {
+  align-self: center;
+  flex-grow: 2;
 }
 
 #icon-container img {
@@ -117,9 +129,10 @@ flex-grow: 2;
   padding: 0 1rem;
   border-radius: 25%;
   margin-left: 0.5rem;
+  color: black
 }
 
-#five-day-container{
+#five-day-container {
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -145,16 +158,77 @@ flex-grow: 2;
   font-size: 0.8rem;
   border-bottom: 1px solid whitesmoke;
 }
-/*
-@media only screen and (min-width: 1024px){
-  main {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
+
+@media only screen and (min-width: 900px) {
+  h1 {
+    font-size: 3rem;
   }
 
-  #five-day-container {
-    display: flex;
+  main {
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+  }
+
+  #all-search-container {
+    border-right: 4px solid gray;
+    height: 100vh;
+  }
+
+  #search-input-container {
+    height: auto;
     flex-direction: column;
+    padding: 1rem 1rem 1rem .2rem
+  }
+
+  #search-input-container h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  #search-input-container input {
+    font-size: 1.3rem;
+    margin-top: .5rem;
+  }
+
+  #search-input-container button {
+    margin-top: 1rem;
+    width: 50%;
+  }
+
+  #search-history-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #search-history-container button {
+    width: 80%
+  }
+  #five-day-container {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .five-day-item {
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px dotted whitesmoke;
+    width: 20%;
+  }
+
+  .five-day-item div {
+    padding: .6rem;
+    width:90%
+  }
+  .five-day-item div p {
+    font-size: 1rem;
+    width: 90%;
+    text-align: center;
+  }
+
+  .five-day-item div span {
+    margin-top: .4rem;
   }
 }
-*/

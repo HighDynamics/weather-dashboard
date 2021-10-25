@@ -14,7 +14,6 @@ var tempEl = document.getElementById("temp");
 var windEl = document.getElementById("wind");
 var humidityEl = document.getElementById("humidity");
 var uvIndexContainerEl = document.getElementById("uv-index-container");
-console.log(uvIndexContainerEl);
 var uvIndexKeyEl = document.getElementById("uv-index-key");
 var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 
