@@ -260,7 +260,6 @@ if (!localStorage.weather) {
 }
 
 var savedSearches = JSON.parse(localStorage.weather);
-console.log(savedSearches);
 // when a saved city is clicked
 var handleSavedSearchClick = (event) => {
   // sentinel
