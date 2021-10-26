@@ -29,7 +29,7 @@ var getLocation = (input) => {
   var apiState = inputArray[1] ? inputArray[1].trim().replace(" ", "+") : "";
 
   var apiEndpoint =
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
     apiCity +
     "," +
     apiState +
@@ -147,7 +147,7 @@ var getForecast = (location) => {
         var iconEl = document.createElement("img");
         iconEl.setAttribute(
           "src",
-          "http://openweathermap.org/img/wn/" + iconCode + ".png"
+          "https://openweathermap.org/img/wn/" + iconCode + ".png"
         );
         iconContainerEl.appendChild(iconEl);
 
@@ -183,7 +183,7 @@ var renderFiveDayForecast = (dailyArray) => {
     var fiveDayIconEl = document.createElement("img");
     fiveDayIconEl.setAttribute(
       "src",
-      "http://openweathermap.org/img/wn/" + iconCode + ".png"
+      "https://openweathermap.org/img/wn/" + iconCode + ".png"
     );
     fiveDayItemEl.appendChild(fiveDayIconEl);
 
