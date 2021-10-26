@@ -9,6 +9,8 @@ var searchHistoryContainerEl = document.getElementById(
   "search-history-container"
 );
 var cityDateContainerEl = document.getElementById("city-date-container");
+var cityNameEl = document.getElementById("city-name");
+var dateEl = document.querySelector(".date");
 var iconContainerEl = document.getElementById("icon-container");
 var tempEl = document.getElementById("temp");
 var windEl = document.getElementById("wind");
@@ -18,7 +20,7 @@ var uvIndexKeyEl = document.getElementById("uv-index-key");
 var fiveDayForecastContainerEl = document.getElementById("five-day-container");
 
 // render date
-cityDateContainerEl.innerText = currentDate;
+dateEl.innerText = currentDate;
 
 // the api call to open weather geo
 var getLocation = (input) => {
@@ -64,43 +66,30 @@ var getLocation = (input) => {
 
 // the api call to open weather onecall
 var getForecast = (location) => {
-  // reset previous values
-  cityDateContainerEl.innerText = "";
-  tempEl.innerText = "Temp:";
-  windEl.innerText = "Wind:";
-  humidityEl.innerText = "Humidity:";
-  uvIndexKeyEl.innerText = "UV index:";
-
   if (location) {
     fetch(
       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-        location.lat +
-        "&lon=" +
-        location.lon +
-        "&units=imperial&appid=4afb253040e7beb67564a44b1a358f8d"
-    )
+      location.lat +
+      "&lon=" +
+      location.lon +
+      "&units=imperial&appid=4afb253040e7beb67564a44b1a358f8d"
+      )
       .then((response) => {
         if (response.ok) {
           return response.json();
         }
       })
       .then((data) => {
-        var cityNameEl = document.createElement("h3");
-        var dateEl = document.createElement("span");
-        var rulerEl = document.createElement("hr")
-        dateEl.setAttribute("class", "date");
-
         cityNameEl.innerText = location.string;
-        dateEl.innerText = currentDate;
-
+        
         // empty container and append elements
-        cityDateContainerEl.innerText = "";
-        cityDateContainerEl.append(cityNameEl, dateEl, rulerEl);
-
+        cityDateContainerEl.innerHTML = "";
+        cityDateContainerEl.append(cityNameEl, dateEl);
+        
         // render data to detailed forecast
-        tempEl.innerText += " " + data.current.temp + " \u00BAF";
-        windEl.innerText += " " + data.current.wind_speed + " MPH";
-        humidityEl.innerText += " " + data.current.humidity + "%";
+        tempEl.innerText = "Temp: " + data.current.temp + " \u00BAF";
+        windEl.innerText = "Wind: " + data.current.wind_speed + " MPH";
+        humidityEl.innerText = "Humidity: " + data.current.humidity + "%";
 
         var uvIndex = data.current.uvi;
         var uvIndexValueEl = document.createElement("span");
@@ -165,7 +154,7 @@ var getForecast = (location) => {
         renderFiveDayForecast(data.daily);
       })
       .catch((error) => {
-        //TODO:alert("There was a problem with the request.");
+        alert("There was a problem with the request.");
         console.error(error);
       });
   }
@@ -174,7 +163,7 @@ var getForecast = (location) => {
 // render 5-day forecast
 var renderFiveDayForecast = (dailyArray) => {
   // clear previous 5-day forecast
-  fiveDayForecastContainerEl.innerHTML = "";
+  fiveDayForecastContainerEl.innerHTML = "<h4>Five Day Forecast:</h4>";
 
   // create new elements
   for (var i = 0; i < 5; i++) {
@@ -183,7 +172,7 @@ var renderFiveDayForecast = (dailyArray) => {
     fiveDayItemEl.setAttribute("class", "five-day-item");
 
     // date
-    var fiveDayDateEl = document.createElement("h4");
+    var fiveDayDateEl = document.createElement("h5");
     fiveDayDateEl.innerText = DateTime.now()
       .plus({ days: i + 1 })
       .toLocaleString();
