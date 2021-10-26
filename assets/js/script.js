@@ -69,11 +69,11 @@ var getForecast = (location) => {
   if (location) {
     fetch(
       "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-      location.lat +
-      "&lon=" +
-      location.lon +
-      "&units=imperial&appid=4afb253040e7beb67564a44b1a358f8d"
-      )
+        location.lat +
+        "&lon=" +
+        location.lon +
+        "&units=imperial&appid=4afb253040e7beb67564a44b1a358f8d"
+    )
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -81,11 +81,11 @@ var getForecast = (location) => {
       })
       .then((data) => {
         cityNameEl.innerText = location.string;
-        
+
         // empty container and append elements
         cityDateContainerEl.innerHTML = "";
         cityDateContainerEl.append(cityNameEl, dateEl);
-        
+
         // render data to detailed forecast
         tempEl.innerText = "Temp: " + data.current.temp + " \u00BAF";
         windEl.innerText = "Wind: " + data.current.wind_speed + " MPH";
@@ -142,7 +142,7 @@ var getForecast = (location) => {
         }
 
         // remove old icon, render new icon
-        iconContainerEl.innerHTML = ""
+        iconContainerEl.innerHTML = "";
         var iconCode = data.current.weather[0].icon;
         var iconEl = document.createElement("img");
         iconEl.setAttribute(
@@ -254,34 +254,42 @@ var handleSearch = () => {
   cityInputEl.value = "";
 };
 
+// set up localStorage
+if (!localStorage.weather) {
+  localStorage.weather = "[]";
+}
+
+var savedSearches = JSON.parse(localStorage.weather);
+console.log(savedSearches);
 // when a saved city is clicked
 var handleSavedSearchClick = (event) => {
   // sentinel
-  if(event.target.nodeName !== "BUTTON"){
-    return
+  if (event.target.nodeName !== "BUTTON") {
+    return;
   }
 
   var city = event.target.getAttribute("data-city");
-  getForecast(JSON.parse(localStorage[city]));
+  var index = savedSearches.findIndex((element) => element.storageKey === city);
+  getForecast(savedSearches[index]);
 };
 
 // save data to localStorage
 var saveSearch = (dataObject) => {
   createSavedSearchButton(dataObject);
 
-  localStorage[dataObject.storageKey] = JSON.stringify(dataObject);
+  savedSearches.push(dataObject);
+  localStorage.weather = JSON.stringify(savedSearches);
 };
 
 // check localStorage for data; render if available
 var renderSavedSearches = () => {
   // sentinel
-  if (localStorage.length === 0) {
+  if (savedSearches.length === 0) {
     return;
   }
 
-  for (var i = 0; i < localStorage.length; i++) {
-    var data = JSON.parse(localStorage.getItem(localStorage.key(i)));
-    createSavedSearchButton(data);
+  for (var i = 0; i < savedSearches.length; i++) {
+    createSavedSearchButton(savedSearches[i]);
   }
 };
 renderSavedSearches();
