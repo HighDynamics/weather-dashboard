@@ -165,6 +165,10 @@ h3 {
   background-color: var(--transparent-white);
 }
 
+.five-day-item h5 {
+  margin: 0;
+}
+
 .five-day-item div {
   display: flex;
   flex-direction: column;
